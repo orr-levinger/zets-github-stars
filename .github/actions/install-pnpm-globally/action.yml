@@ -1,0 +1,9 @@
+name: 'Install npm globally'
+description: 'Install npm globally'
+
+runs:
+  using: "composite"
+  steps:
+    - id: install-
+      shell: bash
+      run: npm i -g npm@9.8.1
