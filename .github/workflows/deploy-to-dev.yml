@@ -34,7 +34,9 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd backend
+          npm install
 
       - name: Prepare AWS credentials
         run: |
