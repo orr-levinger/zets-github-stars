@@ -93,6 +93,40 @@ functions:
       - Effect: Allow
         Action: ssm:GetParameter
         Resource: arn:aws:ssm:${self:custom.region}:${aws:accountId}:parameter/zets-github-token
+  saveRepos:
+    handler: src/functions/github/save-repos.handler
+    events:
+      - http:
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+          path: github/repos
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    stars:
+                      type: integer
+                      format: int32
+                    id:
+                      type: integer
+                      format: int32
+                  required:
+                    - name
+                    - stars
+                    - id
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ssm:GetParameter
+        Resource: arn:aws:ssm:${self:custom.region}:${aws:accountId}:parameter/zets-github-token
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}

@@ -27,7 +27,7 @@ const queryClient = new QueryClient();
 type Repo = {
   name: string;
   stars: number;
-  id: string;
+  id: number;
 };
 
 const columns = [
@@ -46,7 +46,7 @@ const columns = [
 
 // @ts-ignore
 const AppContent = ({ signOut, user }) => {
-  const [repos, setRepos] = useState<Map<string, Repo>>(new Map());
+  const [repos, setRepos] = useState<Map<number, Repo>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -55,6 +55,23 @@ const AppContent = ({ signOut, user }) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
   const pageSize = 25;
+
+  const handleSaveSelectedRows = async () => {
+    // Gather selected repositories using direct access from the Map
+    const selectedRepos = selectedRowKeys
+      .map((key) => repos.get(Number(key)))
+      .filter((repo) => repo !== undefined);
+
+    // Call API to save the selected repositories
+    try {
+      const response = await API.post('ZetsAPIGatewayAPI', `/github/repos`, {
+        body: selectedRepos,
+      });
+      console.log('Save response:', response);
+    } catch (error) {
+      console.error('Error saving selected repos:', error);
+    }
+  };
 
   const fetchRepos = async () => {
     setIsLoading(true);
@@ -67,11 +84,6 @@ const AppContent = ({ signOut, user }) => {
       );
       const mappedRepos = new Map(newRepos.map((repo) => [repo.id, repo]));
       setRepos((prevRepos) => new Map([...prevRepos, ...mappedRepos]));
-      console.log(`repos`, repos);
-      const arr = Array.from(repos.values());
-      const arr2 = repos.values();
-      console.log(`arr`, arr);
-      console.log(`arr2`, arr2);
       setCurrentPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching repos:', error);
@@ -104,6 +116,14 @@ const AppContent = ({ signOut, user }) => {
 
       {user && (
         <>
+          <View width="100%">
+            <Button
+              onClick={handleSaveSelectedRows}
+              disabled={isLoading || selectedRowKeys.length === 0}
+            >
+              Save Selected
+            </Button>
+          </View>
           <View width="100%">
             <Text>Hello {user.username}</Text>
             <Button onClick={signOut}>

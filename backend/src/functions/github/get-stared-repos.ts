@@ -39,7 +39,7 @@ async function fetchRepositories(page: number, pageSize: number) {
 type GetStaredReposResponse = {
   name: string;
   stars: number;
-  id: string;
+  id: number;
 }[];
 export const handler = async (event: any, context: Context) => {
   try {
