@@ -1,10 +1,6 @@
 node_modules
-.expo
-.expo-shared
 package-lock.json
-pnpm-lock.yaml
 package.json
 .serverless
 tsconfig.json
-app.json
 .eslintrc.json

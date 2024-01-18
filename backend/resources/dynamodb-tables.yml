@@ -1,5 +1,5 @@
 Resources:
-  UsersTable:
+  GithubRepos:
     DeletionPolicy: Delete
     Type: "AWS::DynamoDB::Table"
     Properties:
@@ -11,8 +11,8 @@ Resources:
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: S
-        - AttributeName: phoneNumber
-          AttributeType: S
+        - AttributeName: stars
+          AttributeType: N
       KeySchema:
         - AttributeName: id
           KeyType: HASH

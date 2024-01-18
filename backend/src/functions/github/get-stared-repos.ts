@@ -1,6 +1,6 @@
-import {APIGatewayProxyResult, Context} from 'aws-lambda';
+import { APIGatewayProxyResult, Context } from 'aws-lambda';
 import axios from 'axios';
-import { initSecret } from  '../../lib/SSM';
+import { initSecret } from '../../lib/SSM';
 const GITHUB_API_URL = 'https://api.github.com';
 
 const promise = initSecret('zets-github-token', 'GITHUB_TOKEN');
@@ -19,7 +19,7 @@ async function fetchRepositories(page: number, pageSize: number) {
   try {
     const response = await axios.get(`${GITHUB_API_URL}/search/repositories`, {
       headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` },
-      params: { q: 'stars:>1', sort: 'stars', order: 'desc', per_page: pageSize, page }
+      params: { q: 'stars:>1', sort: 'stars', order: 'desc', per_page: pageSize, page },
     });
     return response.data.items;
   } catch (error) {
@@ -28,27 +28,32 @@ async function fetchRepositories(page: number, pageSize: number) {
   }
 }
 
+type GetStaredReposResponse = {
+  name: string;
+  stars: number;
+  id: string;
+}[];
 export const handler = async (event: any, context: Context) => {
   try {
     return promise.then(async () => {
       console.log('event', event);
       const page = Number(event.queryStringParameters?.page) || 1;
       const pageSize = Number(event.queryStringParameters?.pageSize) || 10;
-      const items = (await fetchRepositories(page, pageSize)).map(repo =>({
+      const items = (await fetchRepositories(page, pageSize)).map((repo) => ({
         name: repo.full_name,
-        stars: repo.stargazers_count
+        stars: repo.stargazers_count,
+        id: repo.id,
       }));
       console.log('items:', items);
       return {
         headers: {
-          "Access-Control-Allow-Origin": "*", // Or a specific domain for production
-          "Access-Control-Allow-Headers": "Content-Type"
+          'Access-Control-Allow-Origin': '*', // Or a specific domain for production
+          'Access-Control-Allow-Headers': 'Content-Type',
         },
         statusCode: 200,
         body: JSON.stringify(items),
       };
     });
-
   } catch (err) {
     return httpError(err, err.statusCode || 500);
   }
