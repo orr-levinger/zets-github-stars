@@ -9,8 +9,7 @@
     "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx}\"",
     "lint": "eslint */src/**/* --ext .js,.jsx,.ts,.tsx",
     "test": "jest",
-    "precommit": "npm run typecheck && lint-staged",
-    "postinstall": "pushd frontend && yarn && popd"
+    "precommit": "npm run typecheck && lint-staged"
   },
   "husky": {
     "hooks": {
