@@ -1,11 +1,11 @@
 import {APIGatewayProxyResult, Context} from 'aws-lambda';
 import axios from 'axios';
-
-const GITHUB_TOKEN = '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'; // Replace with your GitHub token
+import { initSecret } from  '../../lib/SSM';
 const GITHUB_API_URL = 'https://api.github.com';
 
 const PER_PAGE = 10; // Max number of items per page
 
+const promise = initSecret('zets-github-token', 'GITHUB_TOKEN');
 export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
   return {
     statusCode: status || 500,
@@ -20,7 +20,7 @@ export const httpError = (err: Error, status: number): APIGatewayProxyResult => 
 async function fetchRepositories(page: number, pageSize: number) {
   try {
     const response = await axios.get(`${GITHUB_API_URL}/search/repositories`, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}` },
+      headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` },
       params: { q: 'stars:>1', sort: 'stars', order: 'desc', per_page: pageSize, page }
     });
     return response.data.items;
@@ -32,22 +32,25 @@ async function fetchRepositories(page: number, pageSize: number) {
 
 export const handler = async (event: any, context: Context) => {
   try {
-    console.log('event', event);
-    const page = Number(event.queryStringParameters?.page) || 1;
-    const pageSize = Number(event.queryStringParameters?.pageSize) || 10;
-    const items = (await fetchRepositories(page, pageSize)).map(repo =>({
-      name: repo.full_name,
-      stars: repo.stargazers_count
-    }));
-    console.log('items:', items);
-    return {
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Or a specific domain for production
-        "Access-Control-Allow-Headers": "Content-Type"
-      },
-      statusCode: 200,
-      body: JSON.stringify(items),
-    };
+    return promise.then(async () => {
+      console.log('event', event);
+      const page = Number(event.queryStringParameters?.page) || 1;
+      const pageSize = Number(event.queryStringParameters?.pageSize) || 10;
+      const items = (await fetchRepositories(page, pageSize)).map(repo =>({
+        name: repo.full_name,
+        stars: repo.stargazers_count
+      }));
+      console.log('items:', items);
+      return {
+        headers: {
+          "Access-Control-Allow-Origin": "*", // Or a specific domain for production
+          "Access-Control-Allow-Headers": "Content-Type"
+        },
+        statusCode: 200,
+        body: JSON.stringify(items),
+      };
+    });
+
   } catch (err) {
     return httpError(err, err.statusCode || 500);
   }
