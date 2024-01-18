@@ -89,6 +89,10 @@ functions:
                       pageSize:
                         type: integer
                         format: int32
+    iamRoleStatements:
+      - Effect: Allow
+        Action: ssm:GetParameter
+        Resource: arn:aws:ssm:${self:custom.region}:${aws:accountId}:parameter/zets-github-token
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}

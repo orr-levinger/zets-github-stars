@@ -3,8 +3,6 @@ import axios from 'axios';
 import { initSecret } from  '../../lib/SSM';
 const GITHUB_API_URL = 'https://api.github.com';
 
-const PER_PAGE = 10; // Max number of items per page
-
 const promise = initSecret('zets-github-token', 'GITHUB_TOKEN');
 export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
   return {
