@@ -94,6 +94,6 @@ resources:
   - ${file(resources/cognito-user-pool.yml)}
   - Outputs:
       CognitoWebClientId:
-        Value: !Ref CognitoUserPoolClientApp
+        Value: !Ref CognitoUserPoolClientWeb
       CognitoUserPoolId:
         Value: !Ref CognitoUserPool
