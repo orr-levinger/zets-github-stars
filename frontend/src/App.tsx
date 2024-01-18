@@ -47,7 +47,7 @@ const AppContent = ({ signOut, user }) => {
   const [repos, setRepos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 2;
+  const pageSize = 25;
 
   const fetchRepos = async () => {
     setIsLoading(true);
@@ -108,7 +108,7 @@ const AppContent = ({ signOut, user }) => {
           </View>
 
           <View width="100%">
-            <Table dataSource={repos} columns={columns} rowKey="name" pagination={false} />
+            <Table dataSource={repos} columns={columns} rowKey="id" pagination={false} />
           </View>
         </>
       )}

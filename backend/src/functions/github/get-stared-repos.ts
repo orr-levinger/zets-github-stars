@@ -36,9 +36,9 @@ type GetStaredReposResponse = {
 export const handler = async (event: any, context: Context) => {
   try {
     return promise.then(async () => {
-      console.log('event', event);
       const page = Number(event.queryStringParameters?.page) || 1;
       const pageSize = Number(event.queryStringParameters?.pageSize) || 10;
+      console.log(`Fetching page [${page}] and size [${pageSize}]`);
       const items = (await fetchRepositories(page, pageSize)).map((repo) => ({
         name: repo.full_name,
         stars: repo.stargazers_count,
