@@ -1,38 +1,12 @@
 {
-  "name": "map-chat",
+  "name": "zets-hithub-stars",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "typecheck": "pushd frontend && tsc --noEmit && popd && pushd backend $$ tsc --noEmit && popd",
-    "format:check": "prettier --check \"**/*.{js,jsx,json,ts,tsx}\"",
-    "format": "prettier --write \"**/*.{js,jsx,json,ts,tsx}\"",
-    "lint": "eslint */src/**/* --ext .js,.jsx,.ts,.tsx",
-    "test": "jest",
-    "precommit": "npm run typecheck && lint-staged"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run precommit"
-    }
-  },
-  "lint-staged": {
-    "*/src/**/*.{js,jsx,ts,tsx}": [
-      "npm run lint",
-      "npm run format"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/orr-levinger/map-chat.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/orr-levinger/map-chat/issues"
-  },
-  "homepage": "https://github.com/orr-levinger/map-chat#readme",
+  "homepage": "https://github.com/orr-levinger/zets-github-stars/README.md",
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.1.6",
