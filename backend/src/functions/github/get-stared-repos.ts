@@ -39,7 +39,7 @@ export const handler = async (event: any, context: Context) => {
       name: repo.full_name,
       stars: repo.stargazers_count
     }));
-
+    console.log('items:', items);
     return {
       headers: {
         "Access-Control-Allow-Origin": "*", // Or a specific domain for production
