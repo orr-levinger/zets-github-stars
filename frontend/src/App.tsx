@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'antd';
+import _ from 'lodash';
+import { Table, Checkbox } from 'antd';
 import { Amplify, API } from 'aws-amplify';
 import {
   AmplifyProvider,
@@ -26,6 +27,7 @@ const queryClient = new QueryClient();
 type Repo = {
   name: string;
   stars: number;
+  id: string;
 };
 
 const columns = [
@@ -44,27 +46,32 @@ const columns = [
 
 // @ts-ignore
 const AppContent = ({ signOut, user }) => {
-  const [repos, setRepos] = useState([]);
+  const [repos, setRepos] = useState<Map<string, Repo>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const onRowSelected = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
   const pageSize = 25;
 
   const fetchRepos = async () => {
     setIsLoading(true);
     try {
       console.log(`Fetching page ${currentPage} and size: ${pageSize}`);
-      const newRepos = await API.get(
+      const newRepos: Repo[] = await API.get(
         'ZetsAPIGatewayAPI',
         `/github/repos?page=${currentPage}&pageSize=${pageSize}`,
         {}
       );
-      // @ts-ignore
-      setRepos((prevRepos) => [...prevRepos, ...newRepos]);
-      console.log(
-        `new repos are:`,
-        // @ts-ignore
-        repos.map((repo) => repo.name)
-      );
+      const mappedRepos = new Map(newRepos.map((repo) => [repo.id, repo]));
+      setRepos((prevRepos) => new Map([...prevRepos, ...mappedRepos]));
+      console.log(`repos`, repos);
+      const arr = Array.from(repos.values());
+      const arr2 = repos.values();
+      console.log(`arr`, arr);
+      console.log(`arr2`, arr2);
       setCurrentPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching repos:', error);
@@ -72,7 +79,10 @@ const AppContent = ({ signOut, user }) => {
       setIsLoading(false);
     }
   };
-
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onRowSelected,
+  };
   // Initial fetch
   useEffect(() => {
     fetchRepos();
@@ -108,7 +118,13 @@ const AppContent = ({ signOut, user }) => {
           </View>
 
           <View width="100%">
-            <Table dataSource={repos} columns={columns} rowKey="id" pagination={false} />
+            <Table
+              rowSelection={rowSelection}
+              dataSource={Array.from(repos.values())}
+              columns={columns}
+              rowKey="id"
+              pagination={false}
+            />
           </View>
         </>
       )}
