@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "lib": [
+      "es2021",
+      "es2022.error"
+    ],
+    "sourceMap": true,
+    "target": "es2021",
+    "outDir": "out",
+    "emitDecoratorMetadata": true,
+    "paths": {
+      "@functions/*": ["backend/src/functions/*"],
+      "@dynamo/*": ["backend/src/dynamo/*"],
+      "@models/*": ["backend/src/models/*"],
+    }
+  }
+}

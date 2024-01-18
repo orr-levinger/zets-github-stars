@@ -1,0 +1,32 @@
+{
+  "name": "@zets/parent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sls:deploy": "sls deploy --force --verbose --stage $ENV_NAME",
+    "github": "npx ts-node -r tsconfig-paths/register src/functions/githubAPI.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@shiftcoders/dynamo-easy": "^7.1.0",
+    "@types/aws-lambda": "8.10.114",
+    "@types/node": "16.10.0",
+    "aws-sdk": "2.1331.0",
+    "axios": "^1.6.5",
+    "serverless": "3.28.1",
+    "serverless-webpack": "5.10.0",
+    "webpack": "^5.78.0"
+  },
+  "devDependencies": {
+    "fork-ts-checker-webpack-plugin": "^8.0.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "source-map-support": "^0.5.21",
+    "tsconfig-paths-webpack-plugin": "^4.0.1",
+    "ts-loader": "^9.4.2",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

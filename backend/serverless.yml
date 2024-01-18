@@ -1,0 +1,94 @@
+service: zets
+frameworkVersion: "3.28.1"
+
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+
+package:
+  excludeDevDependencies: true
+  exclude:
+    - __tests__/**
+    - __tests__/**/*
+    - .git/**
+    - .webpackCache/**
+    - package-lock.json
+    - pnpm-lock.yaml
+    - package.json
+provider:
+  tags:
+    env: ${sls:stage}
+  name: aws
+  tracing:
+    lambda: true
+  runtime: nodejs18.x
+  region: us-east-1
+  stage: dev
+  versionFunctions: false
+  stackName: ${self:custom.base}-stack
+  timeout: 15
+  endpointType: regional
+  environment:
+    STAGE: ${sls:stage}
+    BASE_NAME: ${self:custom.base}
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+##############################
+
+# CUSTOM
+custom:
+  region: ${opt:region, self:provider.region}
+  base: ${self:service}-${sls:stage}
+  apiGatewayCaching:
+    enabled: true
+    ttlInSeconds: 3600
+  accountId: #{AWS::AccountId}
+  webpack:
+    excludeFiles: "__tests__/**/*.test.js"
+    webpackConfig: "webpack.config.js"
+    packager: "npm"
+    includeModules: true
+  allowedHeaders:
+    - Accept
+    - Content-Type
+    - Content-Length
+    - Authorization
+    - X-Amz-Date
+    - X-Api-Key
+    - X-Amz-Security-Token
+    - X-Amz-User-Agent
+    - app_user_id
+    - app_user_name
+
+functions:
+  getMostStaredRepos:
+    handler: src/functions/github/get-stared-repos.handler
+    events:
+      - http:
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+          path: github/repos
+          method: get
+          cors: true
+          request:
+            parameters:
+              querystrings:
+                page: false
+                pageSize: false
+            schema:
+              application/json:
+                type: object
+                properties:
+                  query:
+                    type: object
+                    properties:
+                      page:
+                        type: integer
+                        format: int32
+                      pageSize:
+                        type: integer
+                        format: int32
+resources:
+  # Cognito
+  - ${file(resources/cognito-user-pool.yml)}
