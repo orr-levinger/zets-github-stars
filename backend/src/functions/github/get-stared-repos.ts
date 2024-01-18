@@ -1,9 +1,14 @@
 import { APIGatewayProxyResult, Context } from 'aws-lambda';
-import axios from 'axios';
+const { Octokit } = require('@octokit/rest');
 import { initSecret } from '../../lib/SSM';
-const GITHUB_API_URL = 'https://api.github.com';
+let octokit;
 
-const promise = initSecret('zets-github-token', 'GITHUB_TOKEN');
+const promise = initSecret('zets-github-token', 'GITHUB_TOKEN').then(() => {
+  octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+  });
+});
+
 export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
   return {
     statusCode: status || 500,
@@ -17,9 +22,12 @@ export const httpError = (err: Error, status: number): APIGatewayProxyResult => 
 };
 async function fetchRepositories(page: number, pageSize: number) {
   try {
-    const response = await axios.get(`${GITHUB_API_URL}/search/repositories`, {
-      headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` },
-      params: { q: 'stars:>1', sort: 'stars', order: 'desc', per_page: pageSize, page },
+    const response = await octokit.request('GET /search/repositories', {
+      q: 'stars:>1',
+      sort: 'stars',
+      order: 'desc',
+      per_page: pageSize,
+      page,
     });
     return response.data.items;
   } catch (error) {
