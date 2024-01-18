@@ -17,9 +17,9 @@ export const handler = async (event: any, context: Context) => {
     return {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*', // Replace with specific domain in production
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-requested-with', // Add other needed headers
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', // Add other needed methods
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Header': '*',
+        'Access-Control-Allow-Methods': '*',
       },
       statusCode: 201,
       body: JSON.stringify({ message: 'Success' }), // Your response body
