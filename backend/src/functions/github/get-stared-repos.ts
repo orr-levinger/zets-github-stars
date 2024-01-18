@@ -41,6 +41,10 @@ export const handler = async (event: any, context: Context) => {
     }));
 
     return {
+      headers: {
+        "Access-Control-Allow-Origin": "*", // Or a specific domain for production
+        "Access-Control-Allow-Headers": "Content-Type"
+      },
       statusCode: 200,
       body: JSON.stringify(items),
     };

@@ -92,3 +92,8 @@ functions:
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}
+  - Outputs:
+      CognitoWebClientId:
+        Value: !Ref CognitoUserPoolClientApp
+      CognitoUserPoolId:
+        Value: !Ref CognitoUserPool
