@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, Context } from 'aws-lambda';
-
+import { repoService } from '@service/repo-service';
 export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
   return {
     statusCode: status || 500,
@@ -13,7 +13,9 @@ export const httpError = (err: Error, status: number): APIGatewayProxyResult => 
 };
 export const handler = async (event: any, context: Context) => {
   try {
-    console.log('items:', event);
+    const claims = event.requestContext.authorizer.claims;
+    const userId = claims.sub;
+    await repoService.deleteRepos(userId, event.body.ids);
     return {
       headers: {
         'Content-Type': 'application/json',

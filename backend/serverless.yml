@@ -125,8 +125,41 @@ functions:
                     - id
     iamRoleStatements:
       - Effect: Allow
-        Action: ssm:GetParameter
-        Resource: arn:aws:ssm:${self:custom.region}:${aws:accountId}:parameter/zets-github-token
+        Action:
+          - dynamodb:*
+        Resource: !GetAtt GithubReposTable.Arn
+  getRepos:
+    handler: src/functions/user-repos/get-repos.handler
+    events:
+      - http:
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+          path: user/repos
+          method: get
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:*
+        Resource: !GetAtt GithubReposTable.Arn
+  deleteRepos:
+    handler: src/functions/user-repos/delete-repos.handler
+    events:
+      - http:
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ApiGatewayAuthorizer
+          path: user/repos
+          method: delete
+          cors: true
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:*
+        Resource: !GetAtt GithubReposTable.Arn
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}

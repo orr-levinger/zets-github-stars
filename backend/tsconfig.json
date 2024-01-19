@@ -12,7 +12,11 @@
     "paths": {
       "@functions/*": ["backend/src/functions/*"],
       "@dynamo/*": ["backend/src/dynamo/*"],
-      "@models/*": ["backend/src/models/*"],
+      "@model/*": ["backend/src/model/*"],
+      "@service/*": ["backend/src/service/*"],
+      "@store/*": ["backend/src/store/*"],
+      "@static/*": ["backend/src/static/*"],
+      "@type/*": ["backend/src/types/*"],
     }
   }
 }
