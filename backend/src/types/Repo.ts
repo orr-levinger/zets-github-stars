@@ -1,6 +1,6 @@
 export interface RepoInterface {
   userId: string;
   id: string;
-  stars: string;
+  stars: number;
   name: string;
 }

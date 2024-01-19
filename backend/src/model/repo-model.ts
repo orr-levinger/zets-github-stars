@@ -12,7 +12,7 @@ export class RepoModel extends BaseDynamoModel implements RepoInterface {
   @PartitionKey()
   userId: string;
   @SortKey()
-  stars: string;
+  stars: number;
   @LSISortKey(RepoModel.byId)
   id: string;
   name: string;
