@@ -28,6 +28,7 @@ export const handler = async (event: any, context: Context) => {
       body: JSON.stringify(repos), // Your response body
     };
   } catch (err) {
+    console.error('Error', { error: err });
     return httpError(err, err.statusCode || 500);
   }
 };

@@ -14,6 +14,6 @@ export class RepoModel extends BaseDynamoModel implements RepoInterface {
   @SortKey()
   stars: number;
   @LSISortKey(RepoModel.byId)
-  id: string;
+  id: number;
   name: string;
 }
