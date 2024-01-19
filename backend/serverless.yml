@@ -30,7 +30,7 @@ provider:
     BASE_NAME: ${self:custom.base}
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     USER_REPO_TABLE:
-      Ref: GithubReposTable2
+      Ref: GithubReposTable
 
 ##############################
 
@@ -127,7 +127,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:*
-        Resource: !GetAtt GithubReposTable2.Arn
+        Resource: !GetAtt GithubReposTable.Arn
   getRepos:
     handler: src/functions/user-repos/get-repos.handler
     events:
@@ -143,7 +143,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:*
-        Resource: !GetAtt GithubReposTable2.Arn
+        Resource: !GetAtt GithubReposTable.Arn
   deleteRepos:
     handler: src/functions/user-repos/delete-repos.handler
     events:
@@ -159,7 +159,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:*
-        Resource: !GetAtt GithubReposTable2.Arn
+        Resource: !GetAtt GithubReposTable.Arn
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}

@@ -1,5 +1,5 @@
 Resources:
-  GithubReposTable2:
+  GithubReposTable:
     DeletionPolicy: Delete
     Type: "AWS::DynamoDB::Table"
     Properties:
@@ -30,6 +30,6 @@ Resources:
           Projection:
             ProjectionType: ALL
       BillingMode: PAY_PER_REQUEST
-      TableName: ${self:custom.base}-repos-2
+      TableName: ${self:custom.base}-repos
       StreamSpecification:
         StreamViewType: NEW_AND_OLD_IMAGES
