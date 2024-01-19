@@ -110,6 +110,7 @@ const AppContent = ({ signOut, user }) => {
   // Initial fetch
   useEffect(() => {
     fetchRepos();
+    loadSavedRepos();
   }, []);
 
   return (
@@ -153,6 +154,15 @@ const AppContent = ({ signOut, user }) => {
             <Table
               rowSelection={rowSelection}
               dataSource={Array.from(repos.values())}
+              columns={columns}
+              rowKey="id"
+              pagination={false}
+            />
+          </View>
+          <View width="100%">
+            <Table
+              rowSelection={rowSelection}
+              dataSource={Array.from(savedRepos.values())}
               columns={columns}
               rowKey="id"
               pagination={false}
