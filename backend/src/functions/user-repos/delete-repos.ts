@@ -13,9 +13,10 @@ export const httpError = (err: Error, status: number): APIGatewayProxyResult => 
 };
 export const handler = async (event: any, context: Context) => {
   try {
+    console.log('event', JSON.stringify(event, null, 2));
     const claims = event.requestContext.authorizer.claims;
     const userId = claims.sub;
-    await repoService.deleteRepos(userId, event.body.ids);
+    await repoService.deleteRepos(userId, event.body);
     return {
       headers: {
         'Content-Type': 'application/json',

@@ -1,23 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
-import { Table, Checkbox } from 'antd';
+import { Table, Layout, Row, Col, Button } from 'antd';
+import './index.css';
 import { Amplify, API } from 'aws-amplify';
-import {
-  AmplifyProvider,
-  Authenticator,
-  Button,
-  Flex,
-  Image,
-  Text,
-  View,
-} from '@aws-amplify/ui-react';
+import { AmplifyProvider, Authenticator, Image } from '@aws-amplify/ui-react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import aws_exports from './aws-exports';
 
 import '@aws-amplify/ui-react/styles.css';
 import theme from './theme';
 // @ts-ignore
-import logo from './logo.svg';
+import logo from './github.svg';
+const { Header, Footer, Content } = Layout;
+
+const headerStyle: React.CSSProperties = {
+  textAlign: 'center',
+  paddingInline: 48,
+  lineHeight: '64px',
+};
+
+const contentStyle: React.CSSProperties = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+};
+
+const footerStyle: React.CSSProperties = {
+  textAlign: 'center',
+  color: '#fff',
+};
+
+const layoutStyle = {
+  borderRadius: 8,
+  overflow: 'hidden',
+  width: 'calc(50% - 8px)',
+  maxWidth: 'calc(50% - 8px)',
+};
 
 Amplify.configure(aws_exports);
 
@@ -51,9 +68,15 @@ const AppContent = ({ signOut, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedSavedRowKeys, setSelectedSavedRowKeys] = useState<React.Key[]>([]);
   const onRowSelected = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
+  };
+
+  const onSavedRowSelected = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedSavedRowKeys(newSelectedRowKeys);
   };
   const pageSize = 25;
 
@@ -68,6 +91,20 @@ const AppContent = ({ signOut, user }) => {
       const response = await API.post('ZetsAPIGatewayAPI', `/user/repos`, {
         body: selectedRepos,
       });
+      loadSavedRepos();
+      console.log('Save response:', response);
+    } catch (error) {
+      console.error('Error saving selected repos:', error);
+    }
+  };
+
+  const handleDeleteSelectedRows = async () => {
+    try {
+      const response = await API.del('ZetsAPIGatewayAPI', `/user/repos`, {
+        body: selectedSavedRowKeys,
+      });
+      loadSavedRepos();
+      setSelectedSavedRowKeys([]);
       console.log('Save response:', response);
     } catch (error) {
       console.error('Error saving selected repos:', error);
@@ -107,76 +144,70 @@ const AppContent = ({ signOut, user }) => {
     selectedRowKeys,
     onChange: onRowSelected,
   };
+  const rowSavedSelection = {
+    selectedSavedRowKeys,
+    onChange: onSavedRowSelected,
+  };
   // Initial fetch
   useEffect(() => {
     fetchRepos();
     loadSavedRepos();
   }, []);
-
   return (
-    <Flex
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="center"
-      alignContent="flex-start"
-      wrap="nowrap"
-      gap="1rem"
-      textAlign="center"
-    >
-      <View width="100%">
-        <Image src={logo} alt="logo" width={240} height={240} />
-      </View>
-
-      {user && (
-        <>
-          <View width="100%">
-            <Button
-              onClick={handleSaveSelectedRows}
-              disabled={isLoading || selectedRowKeys.length === 0}
-            >
-              Save Selected
-            </Button>
-          </View>
-          <View width="100%">
-            <Text>Hello {user.username}</Text>
-            <Button onClick={signOut}>
-              <Text>Sign Out</Text>
-            </Button>
-          </View>
-
-          <View width="100%">
-            <Button onClick={fetchRepos} disabled={isLoading}>
-              {isLoading ? 'Loading...' : 'Next'}
-            </Button>
-          </View>
-
-          <View width="100%">
-            <Table
-              rowSelection={rowSelection}
-              dataSource={Array.from(repos.values())}
-              columns={columns}
-              rowKey="id"
-              pagination={false}
-            />
-          </View>
-          <View width="100%">
-            <Table
-              rowSelection={rowSelection}
-              dataSource={Array.from(savedRepos.values())}
-              columns={columns}
-              rowKey="id"
-              pagination={false}
-            />
-          </View>
-        </>
-      )}
-
-      <View width="100%">
-        <Text>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </Text>
-      </View>
-    </Flex>
+    <Layout style={layoutStyle}>
+      <Header style={headerStyle}>
+        <Row>
+          <Col span={4}>
+            <Button onClick={signOut}>Sign Out</Button>
+          </Col>
+          <Col span={16}></Col>
+          <Col span={4}>
+            <Image src={logo} alt="logo" width={50} height={50} />
+          </Col>
+        </Row>
+      </Header>
+      <Content style={contentStyle}>
+        {user && (
+          <Row>
+            <Col span={12}>
+              <Button
+                type={'primary'}
+                onClick={handleSaveSelectedRows}
+                disabled={isLoading || selectedRowKeys.length === 0}
+              >
+                Save Selected
+              </Button>
+              <Button onClick={fetchRepos} disabled={isLoading}>
+                {isLoading ? 'Loading...' : 'Next'}
+              </Button>
+              <Table
+                rowSelection={rowSelection}
+                dataSource={Array.from(repos.values())}
+                columns={columns}
+                rowKey="id"
+                pagination={false}
+              />
+            </Col>
+            <Col span={12}>
+              <Button
+                onClick={handleDeleteSelectedRows}
+                disabled={isLoading || selectedRowKeys.length === 0}
+              >
+                Delete Selected
+              </Button>
+              <Table
+                rowSelection={rowSavedSelection}
+                dataSource={Array.from(savedRepos.values())}
+                columns={columns}
+                rowKey="id"
+                pagination={false}
+              />
+            </Col>
+          </Row>
+        )}
+      </Content>
+      <Footer style={footerStyle}>Footer</Footer>
+    </Layout>
   );
 };
 
