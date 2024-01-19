@@ -1,5 +1,5 @@
 Resources:
-  GithubReposTable:
+  GithubReposTable2:
     DeletionPolicy: Delete
     Type: "AWS::DynamoDB::Table"
     Properties:
