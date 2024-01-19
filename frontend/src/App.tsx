@@ -191,7 +191,7 @@ const AppContent = ({ signOut, user }) => {
             <Col span={12}>
               <Button
                 onClick={handleDeleteSelectedRows}
-                disabled={isLoading || selectedRowKeys.length === 0}
+                disabled={isLoading || setSelectedSavedRowKeys.length === 0}
               >
                 Delete Selected
               </Button>
