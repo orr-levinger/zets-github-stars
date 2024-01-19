@@ -18,6 +18,8 @@ Resources:
       KeySchema:
         - AttributeName: id
           KeyType: HASH
+        - AttributeName: stars
+          KeyType: RANGE
       LocalSecondaryIndexes:
         - IndexName: byId
           KeySchema:
