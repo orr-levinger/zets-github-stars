@@ -14,7 +14,7 @@ const { Header, Footer, Content } = Layout;
 
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
-  paddingInline: 48,
+  paddingInline: 10,
   lineHeight: '64px',
 };
 
@@ -32,8 +32,8 @@ const footerStyle: React.CSSProperties = {
 const layoutStyle = {
   borderRadius: 8,
   overflow: 'hidden',
-  width: 'calc(50% - 8px)',
-  maxWidth: 'calc(50% - 8px)',
+  width: '100%',
+  margin: 'auto',
 };
 
 Amplify.configure(aws_exports);
