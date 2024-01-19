@@ -178,11 +178,16 @@ const AppContent = ({ signOut, user }) => {
         {user && (
           <Row>
             <Col span={12}>
-              <Button type={'primary'} onClick={handleSaveSelectedRows} disabled={isSavingLoading}>
-                {isSavingLoading ? 'Loading...' : 'Save repos'}
+              <Button
+                loading={isSavingLoading}
+                type={'primary'}
+                onClick={handleSaveSelectedRows}
+                disabled={selectedRowKeys.length === 0}
+              >
+                Save repos
               </Button>
-              <Button onClick={fetchRepos} disabled={isGithubLoading}>
-                {isGithubLoading ? 'Loading...' : 'Next'}
+              <Button loading={isGithubLoading} onClick={fetchRepos}>
+                Next
               </Button>
               <Table
                 rowSelection={rowSelection}
@@ -194,10 +199,11 @@ const AppContent = ({ signOut, user }) => {
             </Col>
             <Col span={12}>
               <Button
+                loading={isDeletingLoading}
                 onClick={handleDeleteSelectedRows}
-                disabled={isDeletingLoading || setSelectedSavedRowKeys.length === 0}
+                disabled={isDeletingLoading || selectedSavedRowKeys.length === 0}
               >
-                {isDeletingLoading ? 'Loading...' : 'Delete'}
+                Delete
               </Button>
               <Table
                 rowSelection={rowSavedSelection}

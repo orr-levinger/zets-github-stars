@@ -26,7 +26,7 @@ export const handler = async (event: any, context: Context) => {
         'Access-Control-Allow-Methods': '*',
       },
       statusCode: 201,
-      body: JSON.stringify({ message: 'Success' }), // Your response body
+      body: JSON.stringify({ message: 'Success' }),
     };
   } catch (err) {
     console.error('Error', { error: err });
