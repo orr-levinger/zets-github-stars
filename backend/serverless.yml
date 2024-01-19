@@ -160,6 +160,10 @@ functions:
         Action:
           - dynamodb:*
         Resource: !GetAtt GithubReposTable.Arn
+      - Effect: Allow
+        Action: dynamodb:Query
+        Resource:
+          - !Sub "${GithubReposTable.Arn}/index/byId"
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}
