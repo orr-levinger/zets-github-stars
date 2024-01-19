@@ -19,15 +19,12 @@ provider:
   tags:
     env: ${sls:stage}
   name: aws
-  tracing:
-    lambda: true
   runtime: nodejs18.x
   region: us-east-1
   stage: dev
   versionFunctions: false
   stackName: ${self:custom.base}-stack
   timeout: 15
-  endpointType: regional
   environment:
     STAGE: ${sls:stage}
     BASE_NAME: ${self:custom.base}
@@ -94,7 +91,7 @@ functions:
         Action: ssm:GetParameter
         Resource: arn:aws:ssm:${self:custom.region}:${aws:accountId}:parameter/zets-github-token
   saveRepos:
-    handler: src/functions/github/save-repos.handler
+    handler: src/functions/user-repos/save-repos.handler
     events:
       - http:
           authorizer:
