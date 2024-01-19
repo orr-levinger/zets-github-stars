@@ -101,7 +101,7 @@ functions:
             type: COGNITO_USER_POOLS
             authorizerId:
               Ref: ApiGatewayAuthorizer
-          path: github/repos
+          path: user/repos
           method: post
           cors: true
           request:

@@ -64,7 +64,7 @@ const AppContent = ({ signOut, user }) => {
 
     // Call API to save the selected repositories
     try {
-      const response = await API.post('ZetsAPIGatewayAPI', `/github/repos`, {
+      const response = await API.post('ZetsAPIGatewayAPI', `/user/repos`, {
         body: selectedRepos,
       });
       console.log('Save response:', response);
