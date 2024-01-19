@@ -47,6 +47,7 @@ const columns = [
 // @ts-ignore
 const AppContent = ({ signOut, user }) => {
   const [repos, setRepos] = useState<Map<number, Repo>>(new Map());
+  const [savedRepos, setSavedRepos] = useState<Map<number, Repo>>(new Map());
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
@@ -67,6 +68,17 @@ const AppContent = ({ signOut, user }) => {
       const response = await API.post('ZetsAPIGatewayAPI', `/user/repos`, {
         body: selectedRepos,
       });
+      console.log('Save response:', response);
+    } catch (error) {
+      console.error('Error saving selected repos:', error);
+    }
+  };
+
+  const loadSavedRepos = async () => {
+    try {
+      const response: Repo[] = await API.get('ZetsAPIGatewayAPI', `/user/repos`, {});
+      const mappedRepos = new Map(response.map((repo) => [repo.id, repo]));
+      setSavedRepos(mappedRepos);
       console.log('Save response:', response);
     } catch (error) {
       console.error('Error saving selected repos:', error);
