@@ -29,6 +29,9 @@ provider:
     STAGE: ${sls:stage}
     BASE_NAME: ${self:custom.base}
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    USER_REPO_TABLE:
+      Ref: GithubReposTable
+
 ##############################
 
 # CUSTOM

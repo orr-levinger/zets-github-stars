@@ -1,2 +1,2 @@
-export const USER_PLAN_TABLE = process.env.USER_PLAN_TABLE!;
-export const AWS_REGION = process.env.USER_PLAN_TABLE || 'us-east-1';
+export const USER_REPO_TABLE = process.env.USER_REPO_TABLE!;
+export const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
