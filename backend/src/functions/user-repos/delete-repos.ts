@@ -16,6 +16,7 @@ export const handler = async (event: any, context: Context) => {
     console.log('event', JSON.stringify(event, null, 2));
     const claims = event.requestContext.authorizer.claims;
     const userId = claims.sub;
+    console.log('ids:', JSON.parse(event.body));
     await repoService.deleteRepos(userId, JSON.parse(event.body));
     return {
       headers: {

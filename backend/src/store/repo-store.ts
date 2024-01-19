@@ -18,9 +18,14 @@ export class RepoStore extends DynamoStoreRepository<RepoModel> {
     return this.batchDelete(repos);
   };
 
-  getReposByIds = async (userId: string, ids: string[]): Promise<RepoModel[]> => {
+  getReposByIds = async (userId: string, ids: number[]): Promise<RepoModel[]> => {
     const queryPromises = ids.map((id) =>
-      this.query().index(RepoModel.byId).wherePartitionKey(userId).execSingle()
+      this.query()
+        .index(RepoModel.byId)
+        .wherePartitionKey(userId)
+        .whereSortKey()
+        .eq(id)
+        .execSingle()
     );
     return await Promise.all(queryPromises);
   };
