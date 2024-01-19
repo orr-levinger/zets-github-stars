@@ -18,6 +18,7 @@ class RepoService {
 
   deleteRepos = async (userId: string, reposIds: string[]): Promise<void> => {
     const reposToDelete = await this.repoStore.getReposByIds(userId, reposIds);
+    console.log('reposToDelete', reposToDelete);
     return this.repoStore.deleteRepos(reposToDelete);
   };
 }

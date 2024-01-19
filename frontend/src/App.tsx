@@ -65,7 +65,9 @@ const columns = [
 const AppContent = ({ signOut, user }) => {
   const [repos, setRepos] = useState<Map<number, Repo>>(new Map());
   const [savedRepos, setSavedRepos] = useState<Map<number, Repo>>(new Map());
-  const [isLoading, setIsLoading] = useState(false);
+  const [isGithubLoading, setIsGithubLoading] = useState(false);
+  const [isSavingLoading, setIsSavingLoading] = useState(false);
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedSavedRowKeys, setSelectedSavedRowKeys] = useState<React.Key[]>([]);
@@ -88,6 +90,7 @@ const AppContent = ({ signOut, user }) => {
 
     // Call API to save the selected repositories
     try {
+      setIsSavingLoading(true);
       const response = await API.post('ZetsAPIGatewayAPI', `/user/repos`, {
         body: selectedRepos,
       });
@@ -95,11 +98,14 @@ const AppContent = ({ signOut, user }) => {
       console.log('Save response:', response);
     } catch (error) {
       console.error('Error saving selected repos:', error);
+    } finally {
+      setIsSavingLoading(false);
     }
   };
 
   const handleDeleteSelectedRows = async () => {
     try {
+      setIsDeletingLoading(true);
       const response = await API.del('ZetsAPIGatewayAPI', `/user/repos`, {
         body: selectedSavedRowKeys,
       });
@@ -108,6 +114,8 @@ const AppContent = ({ signOut, user }) => {
       console.log('Save response:', response);
     } catch (error) {
       console.error('Error saving selected repos:', error);
+    } finally {
+      setIsDeletingLoading(false);
     }
   };
 
@@ -123,7 +131,7 @@ const AppContent = ({ signOut, user }) => {
   };
 
   const fetchRepos = async () => {
-    setIsLoading(true);
+    setIsGithubLoading(true);
     try {
       console.log(`Fetching page ${currentPage} and size: ${pageSize}`);
       const newRepos: Repo[] = await API.get(
@@ -137,7 +145,7 @@ const AppContent = ({ signOut, user }) => {
     } catch (error) {
       console.error('Error fetching repos:', error);
     } finally {
-      setIsLoading(false);
+      setIsGithubLoading(false);
     }
   };
   const rowSelection = {
@@ -170,15 +178,11 @@ const AppContent = ({ signOut, user }) => {
         {user && (
           <Row>
             <Col span={12}>
-              <Button
-                type={'primary'}
-                onClick={handleSaveSelectedRows}
-                disabled={isLoading || selectedRowKeys.length === 0}
-              >
-                Save Selected
+              <Button type={'primary'} onClick={handleSaveSelectedRows} disabled={isSavingLoading}>
+                {isSavingLoading ? 'Loading...' : 'Save repos'}
               </Button>
-              <Button onClick={fetchRepos} disabled={isLoading}>
-                {isLoading ? 'Loading...' : 'Next'}
+              <Button onClick={fetchRepos} disabled={isGithubLoading}>
+                {isGithubLoading ? 'Loading...' : 'Next'}
               </Button>
               <Table
                 rowSelection={rowSelection}
@@ -191,9 +195,9 @@ const AppContent = ({ signOut, user }) => {
             <Col span={12}>
               <Button
                 onClick={handleDeleteSelectedRows}
-                disabled={isLoading || setSelectedSavedRowKeys.length === 0}
+                disabled={isDeletingLoading || setSelectedSavedRowKeys.length === 0}
               >
-                Delete Selected
+                {isDeletingLoading ? 'Loading...' : 'Delete'}
               </Button>
               <Table
                 rowSelection={rowSavedSelection}
