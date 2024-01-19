@@ -1,5 +1,5 @@
 import { APIGatewayProxyResult, Context } from 'aws-lambda';
-import {repoService} from "@service/repo-service";
+import { repoService } from '@service/repo-service';
 
 export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
   return {
@@ -14,12 +14,16 @@ export const httpError = (err: Error, status: number): APIGatewayProxyResult => 
 };
 export const handler = async (event: any, context: Context) => {
   try {
+    console.log('event', JSON.stringify(event, null, 2));
     const claims = event.requestContext.authorizer.claims;
     const userId = claims.sub;
     const repos = JSON.parse(event.body).map((repo) => ({
       userId,
       ...repo,
     }));
+    console.log('userId', userId);
+    console.log('event.body', JSON.stringify(event.body, null, 2));
+    console.log('saveReposForUser', JSON.stringify(repos, null, 2));
     await repoService.saveReposForUser(repos);
     return {
       headers: {
