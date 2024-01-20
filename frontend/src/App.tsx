@@ -10,6 +10,7 @@ import '@aws-amplify/ui-react/styles.css';
 import theme from './theme';
 // @ts-ignore
 import logo from './github.svg';
+import App2 from './Table2';
 const { Header, Footer, Content } = Layout;
 
 const headerStyle: React.CSSProperties = {
@@ -48,6 +49,8 @@ type Repo = {
   repositoryUrl: string;
   avatarUrl: string;
 };
+
+const PAGE_SIZE = 25;
 
 const columns = [
   {
@@ -94,7 +97,6 @@ const AppContent = ({ signOut, user }) => {
   const onSavedRowSelected = (newSelectedRowKeys: React.Key[]) => {
     setSelectedSavedRowKeys(newSelectedRowKeys);
   };
-  const pageSize = 100;
 
   const handleSaveSelectedRows = async () => {
     // Gather selected repositories using direct access from the Map
@@ -149,7 +151,7 @@ const AppContent = ({ signOut, user }) => {
     try {
       const newRepos: Repo[] = await API.get(
         'ZetsAPIGatewayAPI',
-        `/github/repos?page=${currentPage}&pageSize=${pageSize}`,
+        `/github/repos?page=${currentPage}&pageSize=${PAGE_SIZE}`,
         {}
       );
       const mappedRepos = new Map(newRepos.map((repo) => [repo.id, repo]));
@@ -179,19 +181,19 @@ const AppContent = ({ signOut, user }) => {
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>
         <Row>
-          <Col span={4}>
+          <Col xs={24} sm={8} md={6} lg={4}>
             <Button onClick={signOut}>Sign Out</Button>
           </Col>
-          <Col span={16}></Col>
-          <Col span={4}>
+          <Col xs={0} sm={8} md={12} lg={16}></Col>
+          <Col xs={24} sm={8} md={6} lg={4}>
             <Image src={logo} alt="logo" width={50} height={50} />
           </Col>
         </Row>
       </Header>
       <Content style={contentStyle}>
         {user && (
-          <Row>
-            <Col span={12}>
+          <Row gutter={[16, 16]}>
+            <Col xs={24} sm={24} md={12}>
               <Button
                 loading={isSavingLoading}
                 type={'primary'}
@@ -208,10 +210,10 @@ const AppContent = ({ signOut, user }) => {
                 dataSource={Array.from(repos.values())}
                 columns={columns}
                 rowKey="id"
-                pagination={false}
+                scroll={{ x: true }}
               />
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={24} md={12}>
               <Button
                 loading={isDeletingLoading}
                 onClick={handleDeleteSelectedRows}
@@ -224,7 +226,7 @@ const AppContent = ({ signOut, user }) => {
                 dataSource={Array.from(savedRepos.values())}
                 columns={columns}
                 rowKey="id"
-                pagination={false}
+                scroll={{ x: true }}
               />
             </Col>
           </Row>
