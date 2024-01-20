@@ -51,6 +51,7 @@ export const handler = async (event: any, context: Context) => {
         name: repo.full_name,
         stars: repo.stargazers_count,
         repositoryUrl: repo.html_url,
+        avatarUrl: repo.owner.avatar_url,
         id: repo.id,
       }));
       console.log('items:', items);

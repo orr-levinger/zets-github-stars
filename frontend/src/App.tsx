@@ -46,9 +46,18 @@ type Repo = {
   stars: number;
   id: number;
   repositoryUrl: string;
+  avatarUrl: string;
 };
 
 const columns = [
+  {
+    title: 'Avatar',
+    dataIndex: 'avatarUrl',
+    key: 'avatarUrl',
+    render: (text: string, record: Repo) => (
+      <img src={text} alt={`logo.svg`} width={32} height={32} />
+    ),
+  },
   {
     title: 'Name',
     dataIndex: 'name',
@@ -64,7 +73,7 @@ const columns = [
     dataIndex: 'stars',
     key: 'stars',
     sorter: (a: Repo, b: Repo) => a.stars - b.stars,
-    render: (text: string, record: Repo) => `${Math.floor(record.stars / 1000)}K`,
+    render: (text: string, record: Repo) => `${(record.stars / 1000).toFixed(1)}K`,
   },
 ];
 
