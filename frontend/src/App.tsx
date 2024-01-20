@@ -160,7 +160,7 @@ const AppContent = ({ signOut, user }) => {
   useEffect(() => {
     fetchRepos();
     loadSavedRepos();
-  }, []);
+  }, [fetchRepos]);
   return (
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>
