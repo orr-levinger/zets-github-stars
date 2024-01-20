@@ -1,5 +1,4 @@
 import { Auth } from 'aws-amplify';
-console.log('REACT_APP_TEST', process.env.REACT_APP_TEST);
 const awsmobile = {
   aws_project_region: 'us-east-1',
   aws_cognito_region: 'us-east-1',

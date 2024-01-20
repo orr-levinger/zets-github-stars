@@ -46,7 +46,6 @@ export const handler = async (event: any, context: Context) => {
     return promise.then(async () => {
       const page = Number(event.queryStringParameters?.page) || 1;
       const pageSize = Number(event.queryStringParameters?.pageSize) || 10;
-      console.log(`Fetching page [${page}] and size [${pageSize}]`);
       const items = (await fetchRepositories(page, pageSize)).map((repo) => ({
         name: repo.full_name,
         stars: repo.stargazers_count,
@@ -54,7 +53,6 @@ export const handler = async (event: any, context: Context) => {
         avatarUrl: repo.owner.avatar_url,
         id: repo.id,
       }));
-      console.log('items:', items);
       return {
         headers: {
           'Access-Control-Allow-Origin': '*', // Or a specific domain for production

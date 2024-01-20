@@ -55,7 +55,7 @@ const columns = [
     dataIndex: 'avatarUrl',
     key: 'avatarUrl',
     render: (text: string, record: Repo) => (
-      <img src={text} alt={`logo.svg`} width={32} height={32} />
+      <img src={record.avatarUrl} alt={record.avatarUrl ? '' : 'logo.svg'} width={32} height={32} />
     ),
   },
   {
@@ -88,12 +88,10 @@ const AppContent = ({ signOut, user }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedSavedRowKeys, setSelectedSavedRowKeys] = useState<React.Key[]>([]);
   const onRowSelected = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
   const onSavedRowSelected = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedSavedRowKeys(newSelectedRowKeys);
   };
   const pageSize = 25;
@@ -149,7 +147,6 @@ const AppContent = ({ signOut, user }) => {
   const fetchRepos = async () => {
     setIsGithubLoading(true);
     try {
-      console.log(`Fetching page ${currentPage} and size: ${pageSize}`);
       const newRepos: Repo[] = await API.get(
         'ZetsAPIGatewayAPI',
         `/github/repos?page=${currentPage}&pageSize=${pageSize}`,
