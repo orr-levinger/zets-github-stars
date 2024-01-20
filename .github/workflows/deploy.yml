@@ -1,6 +1,7 @@
 name: Deploy Dev
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -101,22 +102,18 @@ jobs:
         run: |
           aws s3 mb s3://${WEBAPP_BUCKET}
           aws s3 website s3://${WEBAPP_BUCKET} --index-document index.html --error-document error.html
-
-      - name: Set Public Read Policy on S3 Bucket
-        if: steps.check-bucket.outputs.exists == 'false'
-        run: |
           aws s3api put-bucket-policy --bucket ${WEBAPP_BUCKET} --policy '{
-              "Version": "2012-10-17",
-              "Statement": [
-                  {
-                      "Sid": "PublicReadGetObject",
-                      "Effect": "Allow",
-                      "Principal": "*",
-                      "Action": "s3:GetObject",
-                      "Resource": "arn:aws:s3:::${WEBAPP_BUCKET}/*"
-                  }
-              ]
-          }'
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Sid": "PublicReadGetObject",
+                                "Effect": "Allow",
+                                "Principal": "*",
+                                "Action": "s3:GetObject",
+                                "Resource": "arn:aws:s3:::${WEBAPP_BUCKET}/*"
+                            }
+                        ]
+                    }'
       - name: Build react app
         run: |
           cd frontend
