@@ -32,7 +32,7 @@ To deploy and run the application in your own environment, you need to create a 
     - **Required**: Yes
 
 - **`WEBAPP_BUCKET`**
-    - **Description**: The name of the S3 bucket where the frontend will be deployed.
+    - **Description**: The name of the S3 bucket where the frontend will be deployed. (Must be unique)
     - **Type**: String
     - **Required**: Yes
 

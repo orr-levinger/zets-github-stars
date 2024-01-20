@@ -54,7 +54,7 @@ const columns = [
     key: 'name',
   },
   {
-    title: 'Stars',
+    title: 'Stars ⭐',
     dataIndex: 'stars',
     key: 'stars',
     sorter: (a: Repo, b: Repo) => a.stars - b.stars,
