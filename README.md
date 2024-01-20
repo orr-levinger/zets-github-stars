@@ -32,7 +32,7 @@ To deploy the project, set the following GitHub secrets. These secrets are used 
 Create a secured variable in your AWS account called `zets-github-token` with your GitHub API token.
 
 1. Navigate to the AWS Management Console.
-2. Go to the service that manages your secured variables (e.g., AWS Secrets Manager).
+2. Go to the service that manages your secured variables (e.g., AWS SSM).
 3. Create a new secret with the key `zets-github-token` and set your GitHub token as the value.
 
 ### Deploying the Application
