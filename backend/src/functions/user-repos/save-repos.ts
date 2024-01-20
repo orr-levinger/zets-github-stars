@@ -21,9 +21,6 @@ export const handler = async (event: any, context: Context) => {
       userId,
       ...repo,
     }));
-    console.log('userId', userId);
-    console.log('event.body', JSON.stringify(event.body, null, 2));
-    console.log('saveReposForUser', JSON.stringify(repos, null, 2));
     await repoService.saveReposForUser(repos);
     return {
       headers: {

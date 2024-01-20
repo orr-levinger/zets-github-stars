@@ -3,4 +3,6 @@ export interface RepoInterface {
   id: number;
   stars: number;
   name: string;
+  repositoryUrl: string;
+  avatarUrl: string;
 }

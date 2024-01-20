@@ -51,21 +51,16 @@ type Repo = {
 
 const columns = [
   {
-    title: 'Avatar',
-    dataIndex: 'avatarUrl',
-    key: 'avatarUrl',
-    render: (text: string, record: Repo) => (
-      <img src={text} alt={`logo.svg`} width={32} height={32} />
-    ),
-  },
-  {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
     render: (text: string, record: Repo) => (
-      <a href={record.repositoryUrl} target="_blank" rel="noopener noreferrer">
-        {text}
-      </a>
+      <span>
+        <img src={record.avatarUrl} alt="logo.svg" width={16} height={16} />
+        <a href={record.repositoryUrl} target="_blank" rel="noopener noreferrer">
+          {text}
+        </a>
+      </span>
     ),
   },
   {

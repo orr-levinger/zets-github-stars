@@ -16,4 +16,6 @@ export class RepoModel extends BaseDynamoModel implements RepoInterface {
   @LSISortKey(RepoModel.byId)
   id: number;
   name: string;
+  repositoryUrl: string;
+  avatarUrl: string;
 }
