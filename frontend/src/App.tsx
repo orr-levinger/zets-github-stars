@@ -94,7 +94,7 @@ const AppContent = ({ signOut, user }) => {
   const onSavedRowSelected = (newSelectedRowKeys: React.Key[]) => {
     setSelectedSavedRowKeys(newSelectedRowKeys);
   };
-  const pageSize = 25;
+  const pageSize = 100;
 
   const handleSaveSelectedRows = async () => {
     // Gather selected repositories using direct access from the Map
