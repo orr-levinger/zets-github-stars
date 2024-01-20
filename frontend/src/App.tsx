@@ -10,21 +10,23 @@ import '@aws-amplify/ui-react/styles.css';
 import theme from './theme';
 // @ts-ignore
 import logo from './github.svg';
-import App2 from './Table2';
 const { Header, Footer, Content } = Layout;
 
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   paddingInline: 10,
-  lineHeight: '64px',
+  lineHeight: '55px',
 };
 
 const contentStyle: React.CSSProperties = {
   textAlign: 'center',
-  minHeight: 120,
-  lineHeight: '120px',
+  minHeight: 60,
+  lineHeight: '60px',
 };
-
+const rowStyle: React.CSSProperties = {
+  height: '30px', // Set a smaller height
+  lineHeight: '30px', // Adjust line height to align the text vertically
+};
 const footerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
@@ -206,6 +208,10 @@ const AppContent = ({ signOut, user }) => {
                 Next
               </Button>
               <Table
+                pagination={{
+                  pageSize: 12,
+                }}
+                size="small"
                 rowSelection={rowSelection}
                 dataSource={Array.from(repos.values())}
                 columns={columns}
@@ -222,6 +228,10 @@ const AppContent = ({ signOut, user }) => {
                 Delete
               </Button>
               <Table
+                pagination={{
+                  pageSize: 12,
+                }}
+                size="small"
                 rowSelection={rowSavedSelection}
                 dataSource={Array.from(savedRepos.values())}
                 columns={columns}
