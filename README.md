@@ -1,5 +1,11 @@
 # Zets Github Starts 
 
+### Fork the Repository
+To run this project in your own AWS account, you should first fork this repository:
+
+1. Navigate to the original repository on GitHub.
+2. Click the "Fork" button in the top-right corner of the page.
+
 ### Prerequisites
 - AWS Account
 - GitHub Account
