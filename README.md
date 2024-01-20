@@ -10,8 +10,16 @@ To run this project in your own AWS account, you should first fork this reposito
 - AWS Account
 - GitHub Account
 
+## Setting up a Development Environment in GitHub
+
+To deploy and run the application in your own environment, you need to create a development environment in your forked GitHub repository and set up the required secrets.
+
 ### Setup Environment Variables in GitHub
-To deploy the project, set the following GitHub secrets. These secrets are used by the GitHub Actions workflow for deploying the backend and frontend of the application.
+1. In your GitHub repository, navigate to the "Settings" tab.
+2. On the left sidebar, click on "Environments".
+3. Click on "New environment" to create a new environment.
+4. Name the environment "dev" (or another name, but make sure it matches the environment name used in the GitHub Actions workflow).
+5. Click on "Configure environment".
 
 - **`AWS_ACCESS_KEY_ID`**
     - **Description**: AWS IAM user access key ID with necessary permissions.
