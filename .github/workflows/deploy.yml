@@ -78,8 +78,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
-          npm install
+          cd frontend
+          yarn install
 
       - name: Prepare AWS credentials
         run: |
