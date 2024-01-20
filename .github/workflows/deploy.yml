@@ -101,6 +101,7 @@ jobs:
         if: env.BUCKET_EXISTS == 'false'
         run: |
           aws s3 mb s3://${WEBAPP_BUCKET}
+          aws s3api put-public-access-block --bucket ${WEBAPP_BUCKET} --public-access-block-configuration "BlockPublicAcls=false,IgnorePublicAcls=false,BlockPublicPolicy=false,RestrictPublicBuckets=false"
           aws s3 website s3://${WEBAPP_BUCKET} --index-document index.html --error-document error.html
           POLICY=$(echo '{
             "Version": "2012-10-17",
@@ -115,7 +116,6 @@ jobs:
             ]
           }')
           aws s3api put-bucket-policy --bucket ${WEBAPP_BUCKET} --policy "$POLICY"
-
       - name: Build react app
         run: |
           cd frontend
