@@ -64,6 +64,7 @@ const columns = [
     dataIndex: 'stars',
     key: 'stars',
     sorter: (a: Repo, b: Repo) => a.stars - b.stars,
+    render: (text: string, record: Repo) => `${Math.floor(record.stars / 1000)}K`,
   },
 ];
 
