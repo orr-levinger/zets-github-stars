@@ -9,7 +9,47 @@ env:
   ENV: dev
   ENV_NAME: dev
 jobs:
-  deploy:
+  deploy-backend:
+    runs-on: ubuntu-20.04
+    environment:
+      name: dev
+    env:
+      AWS_ACCESS_KEY_ID: ${{vars.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.18.0'
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Prepare AWS credentials
+        run: |
+          mkdir ~/.aws
+          echo -e "[${AWS_PROFILE}]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\n" > ~/.aws/credentials
+          cat ~/.aws/credentials
+
+      - name: Deploy ${ENV_NAME} environment
+        run: |
+          echo ENV_NAME=${ENV_NAME}
+          cd backend
+          npm run sls:deploy
+  deploy-frontend:
     runs-on: ubuntu-20.04
     environment:
       name: dev
@@ -45,11 +85,6 @@ jobs:
           echo -e "[${AWS_PROFILE}]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\n" > ~/.aws/credentials
           cat ~/.aws/credentials
 
-      - name: Deploy ${ENV_NAME} environment
-        run: |
-          echo ENV_NAME=${ENV_NAME}
-          cd backend
-          npm run sls:deploy
       - name: Check if S3 Bucket Exists
         id: check-bucket
         run: |
