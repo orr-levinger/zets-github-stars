@@ -50,7 +50,17 @@ jobs:
           echo ENV_NAME=${ENV_NAME}
           cd backend
           npm run sls:deploy
+      - name: Generate Env Config
+        run: |
+          aws cloudformation describe-stacks --stack-name zets-${ENV_NAME}-stack --query "Stacks[0].Outputs" > env-config.json
+
+      - name: Upload env-config artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: env-config
+          path: env-config.json
   deploy-frontend:
+    needs: deploy-backend
     runs-on: ubuntu-20.04
     environment:
       name: dev
@@ -63,6 +73,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Download env-config artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: env-config
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Convert JSON to .env format and move to frontend
+        run: |
+          jq -r '.[] | "REACT_APP_\(.OutputKey)=\(.OutputValue)"' env-config.json > frontend/.env
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
