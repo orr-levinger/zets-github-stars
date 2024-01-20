@@ -51,16 +51,21 @@ type Repo = {
 
 const columns = [
   {
+    title: 'Logo',
+    dataIndex: 'avatarUrl',
+    key: 'avatarUrl',
+    render: (text: string, record: Repo) => (
+      <img src={text} alt={`logo.svg`} width={32} height={32} />
+    ),
+  },
+  {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
     render: (text: string, record: Repo) => (
-      <span>
-        <img src={record.avatarUrl} alt="logo.svg" width={16} height={16} />
-        <a href={record.repositoryUrl} target="_blank" rel="noopener noreferrer">
-          {text}
-        </a>
-      </span>
+      <a href={record.repositoryUrl} target="_blank" rel="noopener noreferrer">
+        {text}
+      </a>
     ),
   },
   {
@@ -68,7 +73,7 @@ const columns = [
     dataIndex: 'stars',
     key: 'stars',
     sorter: (a: Repo, b: Repo) => a.stars - b.stars,
-    render: (text: string, record: Repo) => `${(record.stars / 1000).toFixed(1)}K`,
+    render: (text: string, record: Repo) => `${(record.stars / 1000).toFixed(1)}K ⭐`,
   },
 ];
 
