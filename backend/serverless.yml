@@ -164,6 +164,18 @@ functions:
         Action: dynamodb:Query
         Resource:
           - !Sub "${GithubReposTable.Arn}/index/byId"
+    request:
+      schema:
+        application/json:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int32
+            required:
+              - id
 resources:
   # Cognito
   - ${file(resources/cognito-user-pool.yml)}
