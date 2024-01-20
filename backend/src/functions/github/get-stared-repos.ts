@@ -50,6 +50,7 @@ export const handler = async (event: any, context: Context) => {
       const items = (await fetchRepositories(page, pageSize)).map((repo) => ({
         name: repo.full_name,
         stars: repo.stargazers_count,
+        repositoryUrl: repo.html_url,
         id: repo.id,
       }));
       console.log('items:', items);

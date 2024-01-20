@@ -45,6 +45,7 @@ type Repo = {
   name: string;
   stars: number;
   id: number;
+  repositoryUrl: string;
 };
 
 const columns = [
@@ -52,6 +53,11 @@ const columns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
+    render: (text: string, record: Repo) => (
+      <a href={record.repositoryUrl} target="_blank" rel="noopener noreferrer">
+        {text}
+      </a>
+    ),
   },
   {
     title: 'Stars ⭐',
