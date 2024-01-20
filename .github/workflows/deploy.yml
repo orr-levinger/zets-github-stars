@@ -90,7 +90,7 @@ jobs:
       - name: Check if S3 Bucket Exists
         id: check-bucket
         run: |
-          if aws s3 ls "s3://$WEBAPP_BUCKET}" 2>&1 | grep -q 'NoSuchBucket'; then
+          if aws s3 ls "s3://${WEBAPP_BUCKET}" 2>&1 | grep -q 'NoSuchBucket'; then
             echo "::set-output name=exists::false"
           else
             echo "::set-output name=exists::true"

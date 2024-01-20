@@ -160,7 +160,8 @@ const AppContent = ({ signOut, user }) => {
   useEffect(() => {
     fetchRepos();
     loadSavedRepos();
-  }, [fetchRepos]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Layout style={layoutStyle}>
       <Header style={headerStyle}>
