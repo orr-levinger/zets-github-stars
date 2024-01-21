@@ -1,5 +1,7 @@
 import React from 'react';
 import { AmplifyProvider, Authenticator } from '@aws-amplify/ui-react';
+import './index.css';
+import '@aws-amplify/ui-react/styles.css';
 import AppContent from './components/AppContent';
 import theme from './theme';
 import aws_exports from './aws-exports';
