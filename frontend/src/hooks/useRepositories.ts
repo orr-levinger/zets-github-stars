@@ -12,12 +12,12 @@ const useRepositories = () => {
   const [isDeletingLoading, setIsDeletingLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchRepos = async () => {
+  const fetchRepos = async (pageSize = PAGE_SIZE) => {
     setIsGithubLoading(true);
     try {
       const response: Repo[] = await API.get(
         'ZetsAPIGatewayAPI',
-        `/github/repos?page=${currentPage}&pageSize=${PAGE_SIZE}`,
+        `/github/repos?page=${currentPage}&pageSize=${pageSize}`,
         {}
       );
       const newRepos = new Map(response.map((repo: Repo) => [repo.id, repo]));

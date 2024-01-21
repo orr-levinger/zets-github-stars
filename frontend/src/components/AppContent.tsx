@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Layout, Row, Col, Button, Table } from 'antd';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import useRepositories from '../hooks/useRepositories';
@@ -55,21 +55,25 @@ const AppContent = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedSavedRowKeys, setSelectedSavedRowKeys] = useState<React.Key[]>([]);
 
-  useEffect(() => {
+  const handleSaveSelectedRows = useCallback(() => {
+    saveSelectedRepos(selectedRowKeys);
+    setSelectedRowKeys([]);
+  }, [saveSelectedRepos, selectedRowKeys]);
+
+  const handleDeleteSelectedRows = useCallback(() => {
+    deleteSelectedRepos(selectedSavedRowKeys);
+    setSelectedSavedRowKeys([]);
+  }, [deleteSelectedRepos, selectedSavedRowKeys]);
+
+  const onLoadMoreClicked = useCallback(() => {
     fetchRepos();
+  }, [fetchRepos]);
+
+  useEffect(() => {
+    fetchRepos(100);
     loadSavedRepos();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleSaveSelectedRows = () => {
-    saveSelectedRepos(selectedRowKeys);
-    setSelectedRowKeys([]);
-  };
-
-  const handleDeleteSelectedRows = () => {
-    deleteSelectedRepos(selectedSavedRowKeys);
-    setSelectedSavedRowKeys([]);
-  };
 
   const columns = [
     {
@@ -134,7 +138,7 @@ const AppContent = ({
                 >
                   Save Selected Repos
                 </Button>
-                <Button loading={isGithubLoading} onClick={fetchRepos}>
+                <Button loading={isGithubLoading} onClick={onLoadMoreClicked}>
                   Load More Repos
                 </Button>
                 <Table
@@ -174,4 +178,4 @@ const AppContent = ({
   );
 };
 
-export default AppContent;
+export default React.memo(AppContent);
