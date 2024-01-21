@@ -20,7 +20,7 @@ As discussed in the zoom I made it "My Own" So I can showcase my way of thinking
 * For CI/CD i am using GitHub actions
   * to streamline the deployment process so the BE and FE are updated automatically on every 'master' push.
 
-### Gaps
+### Gaps and Nice to Haves
 * Static website hosting in s3
   * currently it uses http protocol and not https. I would have set certificate to make it https
 * React:
@@ -28,6 +28,10 @@ As discussed in the zoom I made it "My Own" So I can showcase my way of thinking
   * Could have used a modern state management and lifecycle tool like redux or react-query.
   * Nicer layout with proper CSS
   * Fetching by clicking the next page and not the NEXT button.
+* Saved repos are not automatically updated with the current number of stars (could be nice to implement)
+* CI/CD
+  * Could be nice to skip backend or frontend in no code was changed in either respectively
+  * Create env per PR for testing before merging to master
 
 ### Fork the Repository
 To run this project in your own AWS account, you should first fork this repository:
