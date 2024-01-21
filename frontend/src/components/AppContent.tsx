@@ -23,7 +23,7 @@ const AppContent = ({ signOut, user }) => {
   useEffect(() => {
     fetchRepos();
     loadSavedRepos();
-  }, []);
+  }, [fetchRepos, loadSavedRepos]);
 
   const handleSaveSelectedRows = () => {
     saveSelectedRepos(selectedRowKeys);
@@ -129,7 +129,7 @@ const AppContent = ({ signOut, user }) => {
           </>
         )}
       </Layout.Content>
-      <Layout.Footer>Footer</Layout.Footer>
+      <Layout.Footer>The Best Git Stars Ranking View In The Universe</Layout.Footer>
     </Layout>
   );
 };
