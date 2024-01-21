@@ -23,10 +23,7 @@ const contentStyle: React.CSSProperties = {
   minHeight: 60,
   lineHeight: '60px',
 };
-const rowStyle: React.CSSProperties = {
-  height: '30px', // Set a smaller height
-  lineHeight: '30px', // Adjust line height to align the text vertically
-};
+
 const footerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
