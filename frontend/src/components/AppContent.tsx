@@ -23,7 +23,8 @@ const AppContent = ({ signOut, user }) => {
   useEffect(() => {
     fetchRepos();
     loadSavedRepos();
-  }, [fetchRepos, loadSavedRepos]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSaveSelectedRows = () => {
     saveSelectedRepos(selectedRowKeys);
