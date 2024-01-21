@@ -1,5 +1,25 @@
 # Zets Github Starts 
 
+### Architecture choices
+As discussed in the zoom I made it "My Own" So I can showcase my way of thinking and how I would approach this kind of task. 
+* serverless framework as my IaC to be able to update and redeploy changes easily.
+* Lambda for scalability and simplicity (Not having to manage Containers lifecycle)
+* API Gateway
+  * Fully managed makes it easy for developers to create, publish, maintain, monitor
+  * Secure APIs at any scale.
+  * Input schema validation capabilities.
+* Cognito and Amplify for authentication and authorisation
+  * Offers user interface
+  * Scalability and Security
+  * Simple Integration with AWS Services
+* S3 as the frontend single-page application
+  * Cost-Effective Hosting
+  * High Scalability and Availability
+  * Easy Deployment and Maintenance
+  * Simple to Update
+* For CI/CD i am using GitHub actions
+  * to streamline the deployment process so the BE and FE are updated automatically on every 'master' push.
+
 ### Fork the Repository
 To run this project in your own AWS account, you should first fork this repository:
 
