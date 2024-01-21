@@ -16,7 +16,9 @@
       "@service/*": ["backend/src/service/*"],
       "@store/*": ["backend/src/store/*"],
       "@static/*": ["backend/src/static/*"],
+      "@lib/*": ["backend/src/lib/*"],
       "@type/*": ["backend/src/types/*"],
+      "@common/*": ["backend/src/common/*"],
     }
   }
 }

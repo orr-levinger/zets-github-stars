@@ -1,6 +1,7 @@
-import { APIGatewayProxyResult, Context } from 'aws-lambda';
-const { Octokit } = require('@octokit/rest');
-import { initSecret } from '../../lib/SSM';
+import { Octokit } from '@octokit/rest';
+import { initSecret } from '@lib/SSM';
+import { httpError, httpResponse } from '@common/http-response';
+import { APIGatewayEvent } from 'aws-lambda';
 let octokit;
 
 const promise = initSecret('zets-github-token', 'GITHUB_TOKEN').then(() => {
@@ -8,18 +9,6 @@ const promise = initSecret('zets-github-token', 'GITHUB_TOKEN').then(() => {
     auth: process.env.GITHUB_TOKEN,
   });
 });
-
-export const httpError = (err: Error, status: number): APIGatewayProxyResult => {
-  return {
-    statusCode: status || 500,
-    body: JSON.stringify(err),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Header': '*',
-    },
-  };
-};
 async function fetchRepositories(page: number, pageSize: number) {
   try {
     const response = await octokit.request('GET /search/repositories', {
@@ -35,13 +24,7 @@ async function fetchRepositories(page: number, pageSize: number) {
     return [];
   }
 }
-
-type GetStaredReposResponse = {
-  name: string;
-  stars: number;
-  id: number;
-}[];
-export const handler = async (event: any, context: Context) => {
+export const handler = async (event: APIGatewayEvent) => {
   try {
     return promise.then(async () => {
       const page = Number(event.queryStringParameters?.page) || 1;
@@ -53,16 +36,10 @@ export const handler = async (event: any, context: Context) => {
         avatarUrl: repo.owner.avatar_url,
         id: repo.id,
       }));
-      return {
-        headers: {
-          'Access-Control-Allow-Origin': '*', // Or a specific domain for production
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-        statusCode: 200,
-        body: JSON.stringify(items),
-      };
+      return httpResponse(items, 200);
     });
   } catch (err) {
+    console.error('Error', { error: err });
     return httpError(err, err.statusCode || 500);
   }
 };
