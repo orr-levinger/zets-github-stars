@@ -12,13 +12,22 @@ As discussed in the zoom I made it "My Own" So I can showcase my way of thinking
   * Offers user interface
   * Scalability and Security
   * Simple Integration with AWS Services
-* S3 as the frontend single-page application
+* S3 as the static website hosting
   * Cost-Effective Hosting
   * High Scalability and Availability
   * Easy Deployment and Maintenance
   * Simple to Update
 * For CI/CD i am using GitHub actions
   * to streamline the deployment process so the BE and FE are updated automatically on every 'master' push.
+
+### Gaps
+* Static website hosting in s3
+  * currently it uses http protocol and not https. I would have set certificate to make it https
+* React:
+  * The code could be much cleaner and be split into smaller components and files.
+  * Could have used a modern state management and lifecycle tool like redux or react-query.
+  * Nicer layout with proper CSS
+  * Fetching by clicking the next page and not the NEXT button.
 
 ### Fork the Repository
 To run this project in your own AWS account, you should first fork this repository:
@@ -57,7 +66,7 @@ To deploy and run the application in your own environment, you need to create a 
     - **Required**: Yes
 
 ### Creating a Secured Variable in AWS
-Create a secured variable in your AWS account called `zets-github-token` with your GitHub API token.
+Create a secured variable in your AWS account called `zets-github-token` with your GitHub API token (In the same region as the stack).
 
 1. Navigate to the AWS Management Console.
 2. Go to the service that manages your secured variables (e.g., AWS SSM).
@@ -69,3 +78,4 @@ The application is deployed using GitHub Actions. The workflow is triggered on a
 1. Push changes to the master branch or go to the 'Actions' tab in your GitHub repository.
 2. Select the 'Deploy Dev' workflow.
 3. Click 'Run workflow' to manually dispatch the workflow.
+4. The endpoit to access the APP will be under http://{WEBAPP_BUCKET}-dev.s3-website-us-east-1.amazonaws.com
