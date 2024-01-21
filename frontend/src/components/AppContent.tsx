@@ -17,6 +17,7 @@ const contentStyle: React.CSSProperties = {
   textAlign: 'center',
   minHeight: 120,
   lineHeight: '120px',
+  flexGrow: 1,
 };
 
 const footerStyle: React.CSSProperties = {
@@ -25,8 +26,9 @@ const footerStyle: React.CSSProperties = {
 };
 
 const layoutStyle = {
-  borderRadius: 8,
+  minHeight: '100vh',
   overflow: 'hidden',
+  borderRadius: 8,
   width: '100%',
   margin: 'auto',
 };
@@ -136,6 +138,7 @@ const AppContent = ({
                   Load More Repos
                 </Button>
                 <Table
+                  size={'small'}
                   rowSelection={rowSelection}
                   dataSource={Array.from(repos.values())}
                   columns={columns}
@@ -153,6 +156,7 @@ const AppContent = ({
                   Delete Selected Repos
                 </Button>
                 <Table
+                  size={'small'}
                   rowSelection={rowSavedSelection}
                   dataSource={Array.from(savedRepos.values())}
                   columns={columns}
