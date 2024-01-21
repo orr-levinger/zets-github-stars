@@ -1,10 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { Layout, Row, Col, Button, Table } from 'antd';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 import useRepositories from '../hooks/useRepositories';
 import { Repo } from '../types/Repo';
-
 // @ts-ignore
-const AppContent = ({ signOut, user }) => {
+import github from '../github.svg';
+
+const { Header, Footer, Content } = Layout;
+const headerStyle: React.CSSProperties = {
+  textAlign: 'center',
+  paddingInline: 48,
+  lineHeight: '64px',
+};
+
+const contentStyle: React.CSSProperties = {
+  textAlign: 'center',
+  minHeight: 120,
+  lineHeight: '120px',
+};
+
+const footerStyle: React.CSSProperties = {
+  textAlign: 'center',
+  color: '#3b3636',
+};
+
+const layoutStyle = {
+  borderRadius: 8,
+  overflow: 'hidden',
+  width: '100%',
+  margin: 'auto',
+};
+
+const AppContent = ({
+  signOut,
+  user,
+}: {
+  signOut: ReturnType<typeof useAuthenticator>['signOut'];
+  user: any;
+}) => {
   const {
     repos,
     savedRepos,
@@ -75,16 +108,18 @@ const AppContent = ({ signOut, user }) => {
   };
 
   return (
-    <Layout>
-      <Layout.Header>
+    <Layout style={layoutStyle}>
+      <Header style={headerStyle}>
         <Row>
-          <Col span={12}>
+          <Col span={4}>
             <Button onClick={signOut}>Sign Out</Button>
           </Col>
-          <Col span={12}>{/* Additional header content */}</Col>
+          <Col offset={19} span={1}>
+            <img src={github} width={60} height={60} alt={'Github'} />
+          </Col>
         </Row>
-      </Layout.Header>
-      <Layout.Content>
+      </Header>
+      <Content style={contentStyle}>
         {user && (
           <>
             <Row gutter={[16, 16]}>
@@ -129,8 +164,8 @@ const AppContent = ({ signOut, user }) => {
             </Row>
           </>
         )}
-      </Layout.Content>
-      <Layout.Footer>The Best Git Stars Ranking View In The Universe</Layout.Footer>
+      </Content>
+      <Footer style={footerStyle}>The Best Git Stars Ranking View In The Universe</Footer>
     </Layout>
   );
 };
