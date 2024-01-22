@@ -15,6 +15,7 @@ Resources:
       AutoVerifiedAttributes:
         - email
       UsernameAttributes:
+        - phone_number
         - email
   CognitoUserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
@@ -26,7 +27,6 @@ Resources:
         - profile
         - aws.cognito.signin.user.admin
       AllowedOAuthFlows:
-        - implicit
         - code
       ClientName: ${self:custom.base}-user-pool-client-web
       UserPoolId: !Ref CognitoUserPool
