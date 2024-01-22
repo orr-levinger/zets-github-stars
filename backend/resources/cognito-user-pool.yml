@@ -42,7 +42,7 @@ Resources:
         - ALLOW_REFRESH_TOKEN_AUTH
       GenerateSecret: false
       PreventUserExistenceErrors: ENABLED
-  UserPoolDomain:
+  UserPoolDomain2:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
       UserPoolId: !Ref CognitoUserPool2
