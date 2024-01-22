@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "sls:deploy": "sls deploy --force --verbose --stage $ENV_NAME",
-    "github": "npx ts-node -r tsconfig-paths/register src/functions/githubAPI.ts",
     "build": "tsc"
   },
   "keywords": [],
