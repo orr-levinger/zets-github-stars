@@ -15,14 +15,12 @@ Resources:
       AutoVerifiedAttributes:
         - email
       UsernameAttributes:
-        - phone_number
         - email
   CognitoUserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthScopes:
-        - phone
         - email
         - openid
         - profile
@@ -39,11 +37,8 @@ Resources:
       SupportedIdentityProviders:
         - COGNITO
       ExplicitAuthFlows:
-        - ALLOW_USER_SRP_AUTH
-        - ALLOW_CUSTOM_AUTH
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
-        - ALLOW_ADMIN_USER_PASSWORD_AUTH
       GenerateSecret: false
       PreventUserExistenceErrors: ENABLED
   UserPoolDomain:
