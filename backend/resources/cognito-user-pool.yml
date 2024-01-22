@@ -58,7 +58,7 @@ Resources:
     DependsOn:
       - CognitoUserPool2
     Properties:
-      Name: CognitoUserPool2Authorizer
+      Name: CognitoUserPoolAuthorizer
       Type: COGNITO_USER_POOLS
       IdentitySource: method.request.header.Authorization
       RestApiId:
