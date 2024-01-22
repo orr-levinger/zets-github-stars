@@ -15,7 +15,6 @@ Resources:
       AutoVerifiedAttributes:
         - email
       UsernameAttributes:
-        - phone_number
         - email
   CognitoUserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
