@@ -21,11 +21,9 @@ Resources:
     Properties:
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthScopes:
-        - phone
         - email
         - openid
         - profile
-        - aws.cognito.signin.user.admin
       AllowedOAuthFlows:
         - code
       ClientName: ${self:custom.base}-user-pool-client-web
@@ -38,10 +36,8 @@ Resources:
         - COGNITO
       ExplicitAuthFlows:
         - ALLOW_USER_SRP_AUTH
-        - ALLOW_CUSTOM_AUTH
         - ALLOW_USER_PASSWORD_AUTH
         - ALLOW_REFRESH_TOKEN_AUTH
-        - ALLOW_ADMIN_USER_PASSWORD_AUTH
       GenerateSecret: false
       PreventUserExistenceErrors: ENABLED
   UserPoolDomain:
