@@ -15,6 +15,7 @@ Resources:
       AutoVerifiedAttributes:
         - email
       UsernameAttributes:
+        - phone_number
         - email
   CognitoUserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
@@ -23,6 +24,7 @@ Resources:
       AllowedOAuthScopes:
         - email
         - openid
+        - profile
         - aws.cognito.signin.user.admin
       AllowedOAuthFlows:
         - code
