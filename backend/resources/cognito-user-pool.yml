@@ -23,6 +23,7 @@ Resources:
       AllowedOAuthScopes:
         - email
         - openid
+        - aws.cognito.signin.user.admin
       AllowedOAuthFlows:
         - code
       ClientName: ${self:custom.base}-user-pool-client-web
