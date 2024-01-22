@@ -182,6 +182,6 @@ resources:
   - ${file(resources/dynamodb-tables.yml)}
   - Outputs:
       CognitoWebClientId:
-        Value: !Ref CognitoUserPoolClientWeb
-      CognitoUserPoolId:
-        Value: !Ref CognitoUserPool
+        Value: !Ref CognitoUserPool2ClientWeb
+      CognitoUserPool2Id:
+        Value: !Ref CognitoUserPool2
