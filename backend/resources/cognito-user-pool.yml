@@ -1,5 +1,5 @@
 Resources:
-  CognitoUserPool2:
+  CognitoUserPool:
     Type: AWS::Cognito::UserPool
     Properties:
       Policies:
@@ -15,21 +15,18 @@ Resources:
       AutoVerifiedAttributes:
         - email
       UsernameAttributes:
-        - phone_number
         - email
-  CognitoUserPool2ClientWeb:
+  CognitoUserPoolClientWeb:
     Type: AWS::Cognito::UserPoolClient
     Properties:
       AllowedOAuthFlowsUserPoolClient: true
       AllowedOAuthScopes:
         - email
         - openid
-        - profile
-        - aws.cognito.signin.user.admin
       AllowedOAuthFlows:
         - code
       ClientName: ${self:custom.base}-user-pool-client-web
-      UserPoolId: !Ref CognitoUserPool2
+      UserPoolId: !Ref CognitoUserPool
       CallbackURLs:
         - http://localhost:3000/
       LogoutURLs:
@@ -42,21 +39,21 @@ Resources:
         - ALLOW_REFRESH_TOKEN_AUTH
       GenerateSecret: false
       PreventUserExistenceErrors: ENABLED
-  UserPoolDomain2:
+  UserPoolDomain:
     Type: AWS::Cognito::UserPoolDomain
     Properties:
-      UserPoolId: !Ref CognitoUserPool2
-      Domain: ${self:custom.base}-zets-2
+      UserPoolId: !Ref CognitoUserPool
+      Domain: ${self:custom.base}-zets
   UserPoolUsersGroup:
     Type: AWS::Cognito::UserPoolGroup
     Properties:
       Description: The group for regular app users
       GroupName: Users
-      UserPoolId: !Ref CognitoUserPool2
+      UserPoolId: !Ref CognitoUserPool
   ApiGatewayAuthorizer:
     Type: AWS::ApiGateway::Authorizer
     DependsOn:
-      - CognitoUserPool2
+      - CognitoUserPool
     Properties:
       Name: CognitoUserPoolAuthorizer
       Type: COGNITO_USER_POOLS
@@ -65,5 +62,5 @@ Resources:
         Ref: ApiGatewayRestApi
       ProviderARNs:
         - Fn::GetAtt:
-            - CognitoUserPool2
+            - CognitoUserPool
             - Arn
